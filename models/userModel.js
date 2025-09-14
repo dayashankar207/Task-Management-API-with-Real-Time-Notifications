@@ -25,6 +25,13 @@ export async function getUserById(id) {
   return rows[0];
 }
 
+export async function getUserByEmail(email) {
+  const { rows } = await pool.query("SELECT * from users WHERE email=$1", [
+    email,
+  ]);
+  return rows[0];
+}
+
 export async function updateUser(id, name, email, password) {
   const updatedHashedPassword = await bcrypt.hash(password, salt);
 
