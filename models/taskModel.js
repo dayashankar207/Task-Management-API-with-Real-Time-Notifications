@@ -28,10 +28,16 @@ export async function getTaskById(id) {
 export async function updateTask(id, title, description, assignedTo, status) {
   const query = `
     UPDATE tasks
-    SET title = $1, description = $2, assigned_to = $3, status = $4, updated_at = NOW()
+    SET
+      title = COALESCE($1, title),
+      description = COALESCE($2, description),
+      assigned_to = COALESCE($3, assigned_to),
+      status = COALESCE($4, status),
+      updated_at = NOW()
     WHERE id = $5
     RETURNING *;
   `;
+
   const { rows } = await pool.query(query, [
     title,
     description,
@@ -39,7 +45,8 @@ export async function updateTask(id, title, description, assignedTo, status) {
     status,
     id,
   ]);
-  return rows[0];
+
+  return rows[0] || null;
 }
 
 // Delete a task

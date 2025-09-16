@@ -5,13 +5,13 @@ import jwt from "jsonwebtoken";
 // Helper to generate tokens
 function generateTokens(user) {
   const accessToken = jwt.sign(
-    { user: { id: user.id, email: user.email } },
+    { user: { id: user.id, email: user.email, role: user.role } },
     process.env.JWT_SECRET,
     { expiresIn: "15m" }
   );
 
   const refreshToken = jwt.sign(
-    { user: { id: user.id, email: user.email } },
+    { user: { id: user.id, email: user.email, role: user.role } },
     process.env.JWT_REFRESH_SECRET,
     { expiresIn: "7d" }
   );

@@ -40,6 +40,9 @@ export async function updateTask(req, res) {
       assignedTo,
       status
     );
+    if (!task) {
+      return res.status(404).json({ error: "Task not found" });
+    }
 
     await redis.publish(
       "tasks",

@@ -28,11 +28,6 @@ app.use("/api/users", userRoutes);
 app.use("/api/tasks", taskRoutes);
 
 
-app.get("/", (req, res) => {
-  res.send("✅ Task Manager API running");
-});
-
-
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on PORT ${PORT}`);

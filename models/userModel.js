@@ -1,17 +1,17 @@
 import pool from "../config/db.js";
 import bcrypt from "bcrypt";
 
-const salt = 10;
+const salt = parseInt(process.env.SALT_ROUNDS);
 
-export async function createUser(name, email, password) {
+export async function createUser(name, email, password, role = "user") {
   const hashedPassword = await bcrypt.hash(password, salt);
 
   const query = `
-    INSERT INTO users (name, email ,password )
-    VALUES ($1,$2,$3)
-    RETURNING id, name , email , created_at
+    INSERT INTO users (name, email ,password,role )
+    VALUES ($1,$2,$3,$4)
+    RETURNING id, name , email , role;
   `;
-  const { rows } = await pool.query(query, [name, email, hashedPassword]);
+  const { rows } = await pool.query(query, [name, email, hashedPassword, role]);
   return rows[0];
 }
 
